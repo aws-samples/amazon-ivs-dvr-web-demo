@@ -1,0 +1,31 @@
+.back-to-live-btn {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 30px;
+  border: none;
+  bottom: 98px;
+  color: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 13px;
+  padding: 14px 18px 14px 17px;
+  position: absolute;
+  z-index: 1;
+}
+
+.inner-content {
+  align-items: center;
+  display: flex;
+  height: 18px;
+  justify-content: space-between;
+  width: 116px;
+}
+
+@media (max-width: 875px) and (orientation: portrait) {
+  .back-to-live-btn {
+    bottom: 210px;
+  }
+}

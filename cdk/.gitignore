@@ -1,0 +1,12 @@
+*.js
+!jest.config.js
+!sanitize-output.js
+*.d.ts
+node_modules
+
+# temp
+temp_out.json
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out

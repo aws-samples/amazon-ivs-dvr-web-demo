@@ -1,0 +1,19 @@
+.app {
+  align-items: center;
+  background-color: var(--color-light-mode-pink);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app {
+    background-color: var(--color-dark-mode-pink);
+  }
+}
+
+@media (max-width: 875px) {
+  .app {
+    background-color: var(--color-black);
+  }
+}
