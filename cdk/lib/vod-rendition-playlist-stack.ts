@@ -16,7 +16,7 @@ import { Construct } from 'constructs';
 import { allowedOrigins, channelType } from '../config.json';
 import { getLambdaEntryPath } from './utils';
 
-export class VODRenditionPlaylistStack extends Stack {
+export class DVRdemoStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
@@ -43,9 +43,9 @@ export class VODRenditionPlaylistStack extends Stack {
     /**
      * IVS Channel
      */
-    const channel = new ivs.CfnChannel(this, 'dvr-channel', {
+    const channel = new ivs.CfnChannel(this, 'DVR-demo-channel', {
       latencyMode: 'LOW',
-      name: 'dvr-channel',
+      name: 'DVR-demo-channel',
       recordingConfigurationArn,
       type: channelType
     });

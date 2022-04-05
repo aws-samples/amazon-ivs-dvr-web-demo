@@ -18,6 +18,7 @@ This demo also uses [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (AW
 ***IMPORTANT NOTE:** this demo will create and use AWS resources on your AWS account, which will cost money.*
 
 Deploying the CDK stack will:
+
 - create an Amazon IVS channel
 - set up auto-record-to-S3 for that channel
 - create Lambda and Lambda@Edge resources to process VOD content
@@ -26,12 +27,13 @@ Deploying the CDK stack will:
 ### Configuration
 
 The `cdk/config.json` file provides two configurable options:
+
 - `channelType` can be set to `BASIC` or `STANDARD`
 - `allowedOrigins` is a list of origins (domain names) that CloudFront uses as the value for the `Access-Control-Allow-Origin` HTTP response header. You can add your custom domain to this list, or specify `['*']` to allow all origins.
 
 By default, the demo will expect you to deploy the backend prior to running the frontend application, which will create a `cdk_output.json` file containing the CloudFront distribution domain name outputted from the deployment. However, if you wish to run your frontend against a different DVR demo backend, this behavior can be overridden by setting the following environment variable:
 
-```
+```shell
 REACT_APP_DISTRIBUTION_DOMAIN_NAME=<domain-name>
 ```
 
@@ -51,8 +53,8 @@ Where `<domain-name>` is the domain name of the CloudFront distribution, such as
 
    The script will give you 2 important pieces of information:
 
-   - `VODRenditionPlaylistStack.ingestServer`, the ingest server address to use in your broadcasting software ([learn how to stream to Amazon IVS](https://aws.amazon.com/blogs/media/setting-up-for-streaming-with-amazon-ivs/))
-   - `VODRenditionPlaylistStack.streamKey`, the stream key for your newly created Amazon IVS channel  
+   - `DVRdemoStack.ingestServer`, the ingest server address to use in your broadcasting software ([learn how to stream to Amazon IVS](https://aws.amazon.com/blogs/media/setting-up-for-streaming-with-amazon-ivs/))
+   - `DVRdemoStack.streamKey`, the stream key for your newly created Amazon IVS channel  
      <br/>
 
    At this point, you may configure your broadcasting software and begin streaming before moving on to the next step.
@@ -71,6 +73,7 @@ Where `<domain-name>` is the domain name of the CloudFront distribution, such as
 ```
 GET https://<distribution-domain-name>/recording-started-latest.json
 ```
+
 Response Schema:
 
 ```ts
@@ -93,19 +96,19 @@ The response object returned by this endpoint will only contain the relevant pro
 
 ## Backend Teardown
 
-To avoid unexpected charges to your account, be sure to destroy your CDK stack when you are finished: 
+To avoid unexpected charges to your account, be sure to destroy your CDK stack when you are finished:
 
 1. If you are currently streaming, stop the stream
 
 2. In the `cdk` directory, run:
 
-    ```shell
-    make destroy
-    ```
+   ```shell
+   make destroy
+   ```
 
 After running this command, you will notice that the stack deletion process will fail. This is expected, as only the *associations* between the Lambda@Edge functions and the CloudFront distribution are removed.
 
-The remaining Lambda@Edge function replicas will typically be automatically deleted by CloudFront within a few hours, at which point you will be able to run `make destroy` once again to complete deleting the stack, along with the Lambda functions that failed to delete from earlier. 
+The remaining Lambda@Edge function replicas will typically be automatically deleted by CloudFront within a few hours, at which point you will be able to run `make destroy` once again to complete deleting the stack, along with the Lambda functions that failed to delete from earlier.
 
 Alternatively, you may choose to manually delete the CloudFormation stack from the AWS console while retaining the Lambda@Edge functions for you to delete at a later time, allowing you to immediately re-deploy the stack if needed.
 
