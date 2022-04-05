@@ -4,7 +4,7 @@
 
 AWS_PROFILE_FLAG = --profile $(AWS_PROFILE)
 CDK_OPTIONS := $(if $(AWS_PROFILE),$(AWS_PROFILE_FLAG))
-STACK 			?= VODRenditionPlaylistStack
+STACK 			?= DVRdemoStack
 
 help: ## Shows this help message
 	@echo "\n$$(tput bold)Available Rules:$$(tput sgr0)\n"
