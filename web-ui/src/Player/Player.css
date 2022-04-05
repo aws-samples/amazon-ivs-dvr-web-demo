@@ -15,7 +15,7 @@
 }
 
 video {
-  background-color: var(--color-dark-mode-pink);
+  background-color: var(--color-black);
   border-radius: 20px;
   display: none;
   height: 100%;
@@ -37,12 +37,6 @@ video.active-player {
   position: absolute;
   width: 100%;
   z-index: 1;
-}
-
-@media (prefers-color-scheme: dark) {
-  video {
-    background-color: var(--color-light-mode-pink);
-  }
 }
 
 @media (max-width: 875px) {
