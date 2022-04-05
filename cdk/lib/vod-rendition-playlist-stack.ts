@@ -172,7 +172,7 @@ export class DVRdemoStack extends Stack {
      */
     const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
       this,
-      'VOD-ResonseHeaders',
+      'VOD-ResponseHeaders',
       {
         responseHeadersPolicyName: 'VOD-ResponseHeaders',
         comment: 'Allows only the required origins for CORS requests',
