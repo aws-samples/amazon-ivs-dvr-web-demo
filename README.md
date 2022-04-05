@@ -39,6 +39,8 @@ REACT_APP_DISTRIBUTION_DOMAIN_NAME=<domain-name>
 
 Where `<domain-name>` is the domain name of the CloudFront distribution, such as `d111111abcdef8.cloudfront.net`. If you have chosen to set this environment variable, you may proceed straight to step 2 in the *Deployment* section below.
 
+***NOTE:** You can add or modify the allowed origins for CORS requests by modifying the ResponseHeaders policy through the CloudFront console, however this is not advisable and we recommend you make such changes by re-deploying the CDK stack with your changes in the `allowedOrigins` list in the `config.json` file.*
+
 ### Deployment
 
 1. To set up the backend, in the `cdk` directory, run:
