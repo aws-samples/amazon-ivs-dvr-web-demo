@@ -17,19 +17,19 @@ const TOTAL_PLAYLIST_UPDATE_DELAY =
  * 1 - The playlist file is fetched from the S3 bucket directly
  *
  * 2 (a) - If the playlist file has been updated within the last 30 seconds (+ 2s write latency buffer),
- *         then the "#EXT-X-ENDLIST" tag is removed from the playlist and the modifed file is returned
+ *         then the "#EXT-X-ENDLIST" tag is removed from the playlist and the modified file is returned
  *         with max-age set to the remaining time until the next playlist update.
  *
  * 2 (b) - If the playlist file has NOT been updated within the last 30 seconds (+ 2s write latency buffer),
  *         then the channel is checked to see if there is currently an active (live) stream playing
  *
- *         3 (a) - If there is an active stream, then there may be a delay in the playlist update, so the
- *                 "#EXT-X-ENDLIST" tag is removed from the playlist and the modified playlist is returned
- *                 with max-age=0
- 
- *         3 (b) - If there is NO active stream, then the fetched playlist is final and no modifications are
- *                 made to the playlist before returning it with max-age=31536000 (1 year - the maximum TTL
- *                 as specified by the cache policy for this caching behaviour)
+ * 3 (a) - If there is an active stream, then there may be a delay in the playlist update, so the
+ *         "#EXT-X-ENDLIST" tag is removed from the playlist and the modified playlist is returned
+ *         with max-age=0
+ * 
+ * 3 (b) - If there is NO active stream, then the fetched playlist is final and no modifications are
+ *         made to the playlist before returning it with max-age=31536000 (1 year - the maximum TTL
+ *         as specified by the cache policy for this caching behavior)
  *
  * @param event CloudFront Origin Request event
  */

@@ -28,7 +28,7 @@ interface RecordingStartedMetadata {
  * object either).
  *
  * If S3 throws a NoSuchKey (404) error, this is likely because we requested the metadata file before
- * the recording-started.json file was created by IVS and saved into the S3 VOD bucket by the S3 Event
+ * the recording-started.json file was created by Amazon IVS and saved into the S3 VOD bucket by the S3 Event
  * Notification Lambda function (saveRecordingStartMeta). Therefore, instead of responding with the 404
  * status code, we send a 200 status code and an empty body, which will be handled accordingly on the
  * client-side. This prevents any unnecessary errors from being thrown on the client-side from this type
