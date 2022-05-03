@@ -15,7 +15,7 @@ This demo also uses [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (AW
 
 ## To use and deploy this project
 
-***IMPORTANT NOTE:** this demo will create and use AWS resources on your AWS account, which will cost money.*
+**\*IMPORTANT NOTE:** this demo will create and use AWS resources on your AWS account, which will cost money.\*
 
 Deploying the CDK stack will:
 
@@ -23,6 +23,11 @@ Deploying the CDK stack will:
 - set up auto-record-to-S3 for that channel
 - create Lambda and Lambda@Edge resources to process VOD content
 - create a CloudFront distribution to serve the VOD content
+
+### Architecture
+
+![architecture](architecture.png)
+<br>
 
 ### Configuration
 
@@ -37,9 +42,9 @@ By default, the demo will expect you to deploy the backend prior to running the 
 REACT_APP_DISTRIBUTION_DOMAIN_NAME=<domain-name>
 ```
 
-Where `<domain-name>` is the domain name of the CloudFront distribution, such as `d111111abcdef8.cloudfront.net`. If you have chosen to set this environment variable, you may proceed straight to step 2 in the *Deployment* section below.
+Where `<domain-name>` is the domain name of the CloudFront distribution, such as `d111111abcdef8.cloudfront.net`. If you have chosen to set this environment variable, you may proceed straight to step 2 in the _Deployment_ section below.
 
-***NOTE:** You can add or modify the allowed origins for CORS requests by modifying the ResponseHeaders policy through the CloudFront console, however this is not advisable and we recommend you make such changes by re-deploying the CDK stack with your changes in the `allowedOrigins` list in the `config.json` file.*
+**\*NOTE:** You can add or modify the allowed origins for CORS requests by modifying the ResponseHeaders policy through the CloudFront console, however this is not advisable and we recommend you make such changes by re-deploying the CDK stack with your changes in the `allowedOrigins` list in the `config.json` file.\*
 
 ### Deployment
 
@@ -49,9 +54,9 @@ Where `<domain-name>` is the domain name of the CloudFront distribution, such as
    make app
    ```
 
-   ***NOTE:** this demo uses [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/), which is currently only available in the US East, N. Virginia (us-east-1) region. To comply with this requirement, this demo is configured to deploy to the us-east-1 region of the account specified in your AWS CLI profile.*
+   **\*NOTE:** this demo uses [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/), which is currently only available in the US East, N. Virginia (us-east-1) region. To comply with this requirement, this demo is configured to deploy to the us-east-1 region of the account specified in your AWS CLI profile.\*
 
-   *In the `cdk` directory, run `make help` to see a list of available targets and other configuration options.*
+   _In the `cdk` directory, run `make help` to see a list of available targets and other configuration options._
 
    The script will give you 2 important pieces of information:
 
@@ -89,7 +94,7 @@ Response Schema:
 ```
 
 - `isChannelLive` is an indicator of the current status of the IVS channel
-- `livePlaybackUrl` is the playback URL for the livestream.  
+- `livePlaybackUrl` is the playback URL for the livestream.
 - `masterKey` is the S3 key path for the `master.m3u8` file of the VOD playback
 - `playlistDuration` is the duration of the latest VOD playlist (used only on iOS mobile browsers)
 - `recordingStartedAt` is the date time that the stream recording started at, in ISO 8601 format
@@ -108,7 +113,7 @@ To avoid unexpected charges to your account, be sure to destroy your CDK stack w
    make destroy
    ```
 
-After running this command, you will notice that the stack deletion process will fail. This is expected, as only the *associations* between the Lambda@Edge functions and the CloudFront distribution are removed.
+After running this command, you will notice that the stack deletion process will fail. This is expected, as only the _associations_ between the Lambda@Edge functions and the CloudFront distribution are removed.
 
 The remaining Lambda@Edge function replicas will typically be automatically deleted by CloudFront within a few hours, at which point you will be able to run `make destroy` once again to complete deleting the stack, along with the Lambda functions that failed to delete from earlier.
 
@@ -116,7 +121,7 @@ Alternatively, you may choose to manually delete the CloudFormation stack from t
 
 ## Limitations
 
-Full functionality for iOS mobile browsers is limited due to player-related constraints. As a consequence, on iOS devices only, the user *may not* be able to seek within the last 30 seconds of the VOD content.
+Full functionality for iOS mobile browsers is limited due to player-related constraints. As a consequence, on iOS devices only, the user _may not_ be able to seek within the last 30 seconds of the VOD content.
 
 ## About Amazon IVS
 
