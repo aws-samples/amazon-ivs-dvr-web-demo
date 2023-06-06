@@ -13,7 +13,11 @@ import {
 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-import { allowedOrigins, channelType } from '../config.json';
+import {
+  allowedOrigins,
+  channelType,
+  reconnectWindowSeconds
+} from '../config.json';
 import { getLambdaEntryPath } from './utils';
 
 export class DVRdemoStack extends Stack {
@@ -35,6 +39,7 @@ export class DVRdemoStack extends Stack {
       {
         name: 'dvr-recording-config',
         destinationConfiguration: { s3: { bucketName: vodBucketName } },
+        recordingReconnectWindowSeconds: reconnectWindowSeconds,
         thumbnailConfiguration: { recordingMode: 'DISABLED' }
       }
     );
