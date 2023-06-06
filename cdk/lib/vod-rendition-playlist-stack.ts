@@ -35,6 +35,7 @@ export class DVRdemoStack extends Stack {
       {
         name: 'dvr-recording-config',
         destinationConfiguration: { s3: { bucketName: vodBucketName } },
+        recordingReconnectWindowSeconds: 60,
         thumbnailConfiguration: { recordingMode: 'DISABLED' }
       }
     );
