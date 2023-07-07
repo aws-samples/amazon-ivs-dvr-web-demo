@@ -4,7 +4,8 @@ A demo web application intended as an educational tool for demonstrating how you
 
 This demo also uses [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (AWS CDK v2).
 
-<img src="amazon-ivs-dvr-demo.png" alt="Amazon IVS DVR demo" />
+![Amazon IVS DVR demo](amazon-ivs-dvr-demo.png)
+
 
 **This project is intended for education purposes only and not for production usage.**
 
