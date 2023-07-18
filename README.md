@@ -120,9 +120,11 @@ The remaining Lambda@Edge function replicas will typically be automatically dele
 
 Alternatively, you may choose to manually delete the CloudFormation stack from the AWS console while retaining the Lambda@Edge functions for you to delete at a later time, allowing you to immediately re-deploy the stack if needed.
 
-## Limitations
+## Limitations and Known Issues
 
-Full functionality for iOS mobile browsers is limited due to player-related constraints. As a consequence, on iOS devices only, the user _may not_ be able to seek within the last 30 seconds of the VOD content.
+- Full functionality for iOS mobile browsers is limited due to player-related constraints. As a consequence, on iOS devices only, the user _may not_ be able to seek within the last 30 seconds of the VOD content.
+- This demo uses on Lambda@Edge, which is currently only supported in the us-east-1 (N.Virginia) region
+- This demo may encounter issues on streams that have been live for over 37 consecutive hours. As a workaround, try restarting your stream if it has been live for over 37 hours.
 
 ## About Amazon IVS
 
