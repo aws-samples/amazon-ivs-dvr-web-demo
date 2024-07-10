@@ -30,7 +30,9 @@ const ControlsProvider = ({ children }) => {
     (event) => {
       if (!isMobileView) return;
 
-      event.stopPropagation();
+      if (event) {
+        event.stopPropagation();
+      }
       resetControlsTimeout();
     },
     [isMobileView, resetControlsTimeout]
