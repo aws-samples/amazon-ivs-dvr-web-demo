@@ -6,7 +6,7 @@ import FadeInOut from '../FadeInOut/FadeInOut';
 import LiveSVG from '../../assets/icons/live';
 import RecordedSVG from '../../assets/icons/recorded';
 
-const StatusPill = ({ isLive, isOpen }) => (
+const StatusPill = ({ isLive = false, isOpen = false }) => (
   <>
     <FadeInOut className="status-pill is-live" inProp={isOpen && isLive}>
       <LiveSVG />
@@ -22,11 +22,6 @@ const StatusPill = ({ isLive, isOpen }) => (
 StatusPill.propTypes = {
   isLive: PropTypes.bool,
   isOpen: PropTypes.bool
-};
-
-StatusPill.defaultProps = {
-  isLive: false,
-  isOpen: false
 };
 
 export default StatusPill;

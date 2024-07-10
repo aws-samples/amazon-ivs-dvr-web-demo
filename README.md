@@ -6,7 +6,6 @@ This demo also uses [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (AW
 
 ![Amazon IVS DVR demo](amazon-ivs-dvr-demo.png)
 
-
 **This project is intended for education purposes only and not for production usage.**
 
 ## Prerequisites
@@ -16,7 +15,7 @@ This demo also uses [AWS Cloud Development Kit](https://aws.amazon.com/cdk/) (AW
 
 ## To use and deploy this project
 
-**\*IMPORTANT NOTE:** this demo will create and use AWS resources on your AWS account, which will cost money.\*
+**IMPORTANT NOTE:** this demo will create and use AWS resources on your AWS account, which will cost money.
 
 Deploying the CDK stack will:
 
@@ -45,7 +44,7 @@ REACT_APP_DISTRIBUTION_DOMAIN_NAME=<domain-name>
 
 Where `<domain-name>` is the domain name of the CloudFront distribution, such as `d111111abcdef8.cloudfront.net`. If you have chosen to set this environment variable, you may proceed straight to step 2 in the _Deployment_ section below.
 
-**\*NOTE:** You can add or modify the allowed origins for CORS requests by modifying the ResponseHeaders policy through the CloudFront console, however this is not advisable and we recommend you make such changes by re-deploying the CDK stack with your changes in the `allowedOrigins` list in the `config.json` file.\*
+**NOTE:** You can add or modify the allowed origins for CORS requests by modifying the ResponseHeaders policy through the CloudFront console, however this is not advisable and we recommend you make such changes by re-deploying the CDK stack with your changes in the `allowedOrigins` list in the `config.json` file.
 
 ### Deployment
 
@@ -55,7 +54,7 @@ Where `<domain-name>` is the domain name of the CloudFront distribution, such as
    make app
    ```
 
-   **\*NOTE:** this demo uses [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/), which is currently only available in the US East, N. Virginia (us-east-1) region. To comply with this requirement, this demo is configured to deploy to the us-east-1 region of the account specified in your AWS CLI profile.\*
+   **NOTE:** this demo uses [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/), which is currently only available in the US East, N. Virginia (us-east-1) region. To comply with this requirement, this demo is configured to deploy to the us-east-1 region of the account specified in your AWS CLI profile.\*
 
    _In the `cdk` directory, run `make help` to see a list of available targets and other configuration options._
 

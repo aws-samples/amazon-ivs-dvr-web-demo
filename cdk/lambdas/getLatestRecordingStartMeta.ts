@@ -49,7 +49,7 @@ const getLatestRecordingStartMeta = async (event: CloudFrontRequestEvent) => {
     const { body: jsonBody } = await getS3Object(key, bucketName);
     const {
       media: {
-        hls: { path, playlist, renditions }
+        hls: { path, byte_range_playlist, renditions }
       },
       recording_started_at: recordingStartedAt,
       streamId: recordedStreamId
@@ -70,7 +70,7 @@ const getLatestRecordingStartMeta = async (event: CloudFrontRequestEvent) => {
 
     // Only return VOD metadata if the recorded stream metadata is for the currently live stream (if one exists)
     if (recordedStreamId === activeStreamId) {
-      recordingStartedMetadata.masterKey = `${path}/${playlist}`;
+      recordingStartedMetadata.masterKey = `${path}/${byte_range_playlist}`;
       recordingStartedMetadata.recordingStartedAt = recordingStartedAt;
 
       try {

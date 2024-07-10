@@ -17,7 +17,7 @@ import useSeekBar, {
   playerControlSeekBarWrapperId
 } from '../../hooks/useSeekBar';
 
-const Controls = ({ isLive }) => {
+const Controls = ({ isLive = true }) => {
   const { stopPropagAndResetTimeout } = useControls();
   const {
     activePlayer,
@@ -343,10 +343,6 @@ const Controls = ({ isLive }) => {
 
 Controls.propTypes = {
   isLive: PropTypes.bool
-};
-
-Controls.defaultProps = {
-  isLive: true
 };
 
 export default Controls;

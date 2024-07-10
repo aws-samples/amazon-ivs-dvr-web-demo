@@ -3,11 +3,11 @@ import {
   aws_cloudfront_origins as origins,
   aws_iam as iam,
   aws_ivs as ivs,
-  aws_lambda_nodejs as lambda,
+  aws_lambda as lambda,
+  aws_lambda_nodejs as lambdan,
   aws_s3 as s3,
   aws_s3_notifications as s3n,
   CfnOutput,
-  Duration,
   Stack,
   StackProps
 } from 'aws-cdk-lib';
@@ -75,32 +75,20 @@ export class DVRdemoStack extends Stack {
       resources: [channelArn]
     });
 
-    /**
-     * Lambda(at)Edge function triggered on Origin Requests to process playlist rendition files
-     */
-    const modifyRenditionPlaylistLambda = new lambda.NodejsFunction(
-      this,
-      'ModifyRenditionPlaylistHandler',
-      {
-        bundling: { minify: true },
-        entry: getLambdaEntryPath('modifyRenditionPlaylist')
-      }
-    );
-
-    // Grant the Lambda execution role Read permissions to the VOD S3 bucket
-    bucket.grantRead(modifyRenditionPlaylistLambda, '*/playlist.m3u8');
-
-    // Grant the Lambda execution role GetStream permissions to the IVS channel
-    modifyRenditionPlaylistLambda.addToRolePolicy(getStreamPolicy);
+    // Lambda default configuration
+    const defaultLambdaConfig = {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      bundling: { minify: true }
+    };
 
     /**
      * Lambda function invoked by an S3 Event Notification to save the latest recording-started.json file
      */
-    const saveRecordingStartMetaLambda = new lambda.NodejsFunction(
+    const saveRecordingStartMetaLambda = new lambdan.NodejsFunction(
       this,
       'SaveRecordingStartMetaHandler',
       {
-        bundling: { minify: true },
+        ...defaultLambdaConfig,
         entry: getLambdaEntryPath('saveRecordingStartMeta')
       }
     );
@@ -125,11 +113,11 @@ export class DVRdemoStack extends Stack {
     /**
      * Lambda(at)Edge function triggered on Origin Requests to retrieve the recording-started-latest.json metadata file
      */
-    const getLatestRecordingStartMetaLambda = new lambda.NodejsFunction(
+    const getLatestRecordingStartMetaLambda = new lambdan.NodejsFunction(
       this,
       'GetLatestRecordingStartMetaHandler',
       {
-        bundling: { minify: true },
+        ...defaultLambdaConfig,
         entry: getLambdaEntryPath('getLatestRecordingStartMeta')
       }
     );
@@ -155,22 +143,6 @@ export class DVRdemoStack extends Stack {
         'channel-arn': channelArn
       }
     });
-
-    /**
-     * Custom Cache Policy to allow max-age caching values between 0 seconds and 1 year
-     */
-    const playlistCachePolicy = new cloudfront.CachePolicy(
-      this,
-      'VOD-PlaylistCaching',
-      {
-        cachePolicyName: 'VOD-PlaylistCaching',
-        comment: 'Policy for VOD Playlist Origin',
-        defaultTtl: Duration.seconds(30),
-        maxTtl: Duration.days(365),
-        minTtl: Duration.seconds(0),
-        enableAcceptEncodingGzip: true
-      }
-    );
 
     /**
      * Custom Response Headers Policy to allow only the required origins for CORS requests
@@ -202,19 +174,6 @@ export class DVRdemoStack extends Stack {
         responseHeadersPolicy
       },
       additionalBehaviors: {
-        // Caching behaviour for invoking a Lambda@Edge function on Origin Requests to fetch and modify a playlist rendition file from the VOD S3 bucket
-        '*/playlist.m3u8': {
-          origin,
-          originRequestPolicy: cloudfront.OriginRequestPolicy.CORS_S3_ORIGIN,
-          responseHeadersPolicy,
-          cachePolicy: playlistCachePolicy,
-          edgeLambdas: [
-            {
-              functionVersion: modifyRenditionPlaylistLambda.currentVersion,
-              eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST
-            }
-          ]
-        },
         // Caching behaviour for invoking a Lambda@Edge function on Origin Requests to fetch the recording-started-latest.json metadata file from the VOD S3 bucket with caching DISABLED
         '/recording-started-latest.json': {
           origin,
