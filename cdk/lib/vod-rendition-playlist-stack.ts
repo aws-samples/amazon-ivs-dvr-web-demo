@@ -9,7 +9,8 @@ import {
   aws_s3_notifications as s3n,
   CfnOutput,
   Stack,
-  StackProps
+  StackProps,
+  Duration
 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
@@ -149,6 +150,22 @@ export class DVRdemoStack extends Stack {
     });
 
     /**
+     * Custom Cache Policy to allow max-age caching values between 0 seconds and 1 year
+     */
+    const byteRangeVariantCachePolicy = new cloudfront.CachePolicy(
+      this,
+      'VOD-ByteRangeVariantCaching',
+      {
+        cachePolicyName: 'VOD-ByteRangeVariantCaching',
+        comment: 'Policy for VOD Byte Range Variant Origin',
+        defaultTtl: Duration.seconds(12),
+        maxTtl: Duration.days(365),
+        minTtl: Duration.seconds(0),
+        enableAcceptEncodingGzip: true
+      }
+    );
+
+    /**
      * Custom Response Headers Policy to allow only the required origins for CORS requests
      */
     const responseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
@@ -178,6 +195,13 @@ export class DVRdemoStack extends Stack {
         responseHeadersPolicy
       },
       additionalBehaviors: {
+        // Caching behaviour for fetching a byte range variant file from the VOD S3 bucket
+        '*/byte-range-variant.m3u8': {
+          origin,
+          originRequestPolicy: cloudfront.OriginRequestPolicy.CORS_S3_ORIGIN,
+          responseHeadersPolicy,
+          cachePolicy: byteRangeVariantCachePolicy
+        },
         // Caching behaviour for invoking a Lambda@Edge function on Origin Requests to fetch the recording-started-latest.json metadata file from the VOD S3 bucket with caching DISABLED
         '/recording-started-latest.json': {
           origin,
