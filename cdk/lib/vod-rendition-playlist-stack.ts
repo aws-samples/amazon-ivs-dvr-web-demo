@@ -16,7 +16,9 @@ import { Construct } from 'constructs';
 import {
   allowedOrigins,
   channelType,
-  reconnectWindowSeconds
+  reconnectWindowSeconds,
+  insecureRTMPIngest,
+  transcodePreset
 } from '../config.json';
 import { getLambdaEntryPath } from './utils';
 
@@ -52,7 +54,9 @@ export class DVRdemoStack extends Stack {
       latencyMode: 'LOW',
       name: 'DVR-demo-channel',
       recordingConfigurationArn,
-      type: channelType
+      type: channelType,
+      insecureIngest: insecureRTMPIngest,
+      preset: transcodePreset
     });
     const {
       attrArn: channelArn,
