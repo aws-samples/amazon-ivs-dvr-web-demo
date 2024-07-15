@@ -33,8 +33,10 @@ Deploying the CDK stack will:
 
 The `cdk/config.json` file provides two configurable options:
 
-- `channelType` can be set to `BASIC` or `STANDARD`
+- `channelType` can be set to `BASIC`, `STANDARD`, `ADVANCED_SD`, or `ADVANCED_HD`
 - `allowedOrigins` is a list of origins (domain names) that CloudFront uses as the value for the `Access-Control-Allow-Origin` HTTP response header. You can add your custom domain to this list, or specify `['*']` to allow all origins.
+- `insecureRTMPIngest` is a boolean flag that, when set to true, allows the channel to accept RTMP streams without requiring a secure connection.
+- `transcodePreset` can only be set for `ADVANCED_HD` and `ADVANCED_SD` channel types, with allowed values `HIGHER_BANDWIDTH_DELIVERY` and `CONSTRAINED_BANDWIDTH_DELIVERY`. For `BASIC` and `STANDARD` channel types, preset should be an empty string (`""`).
 
 By default, the demo will expect you to deploy the backend prior to running the frontend application, which will create a `cdk_output.json` file containing the CloudFront distribution domain name outputted from the deployment. However, if you wish to run your frontend against a different DVR demo backend, this behavior can be overridden by setting the following environment variable:
 
@@ -54,7 +56,7 @@ Where `<domain-name>` is the domain name of the CloudFront distribution, such as
    make app
    ```
 
-   **NOTE:** this demo uses [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/), which is currently only available in the US East, N. Virginia (us-east-1) region. To comply with this requirement, this demo is configured to deploy to the us-east-1 region of the account specified in your AWS CLI profile.\*
+   **NOTE:** this demo uses [AWS Lambda@Edge](https://aws.amazon.com/lambda/edge/), which is currently only available in the US East, N. Virginia (us-east-1) region. To comply with this requirement, this demo is configured to deploy to the us-east-1 region of the account specified in your AWS CLI profile.
 
    _In the `cdk` directory, run `make help` to see a list of available targets and other configuration options._
 
@@ -95,7 +97,7 @@ Response Schema:
 
 - `isChannelLive` is an indicator of the current status of the IVS channel
 - `livePlaybackUrl` is the playback URL for the livestream.
-- `masterKey` is the S3 key path for the `master.m3u8` file of the VOD playback
+- `masterKey` is the S3 key path for the `byte-range-multivariant.m3u8` file of the VOD playback
 - `playlistDuration` is the duration of the latest VOD playlist (used only on iOS mobile browsers)
 - `recordingStartedAt` is the date time that the stream recording started at, in ISO 8601 format
 
@@ -123,7 +125,6 @@ Alternatively, you may choose to manually delete the CloudFormation stack from t
 
 - Full functionality for iOS mobile browsers is limited due to player-related constraints. As a consequence, on iOS devices only, the user _may not_ be able to seek within the last 30 seconds of the VOD content.
 - This demo uses Lambda@Edge, which is currently only supported in the us-east-1 (N.Virginia) region.
-- This demo may encounter issues on streams that have been live for over 37 consecutive hours. As a workaround, try restarting your stream if it has been live for over 37 hours.
 
 ## About Amazon IVS
 
