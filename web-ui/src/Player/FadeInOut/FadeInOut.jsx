@@ -9,7 +9,13 @@ const transitionStyles = {
   exited: { opacity: 0 }
 };
 
-const FadeInOut = ({ children, className, inProp, timeout, ...rest }) => {
+const FadeInOut = ({
+  children,
+  className = '',
+  inProp = false,
+  timeout = 300,
+  ...rest
+}) => {
   const nodeRef = useRef(null);
   const defaultStyle = {
     transition: `opacity ${timeout}ms ease-in-out`,
@@ -17,12 +23,7 @@ const FadeInOut = ({ children, className, inProp, timeout, ...rest }) => {
   };
 
   return (
-    <Transition
-      in={inProp}
-      nodeRef={nodeRef}
-      timeout={timeout}
-      {...rest}
-    >
+    <Transition in={inProp} nodeRef={nodeRef} timeout={timeout} {...rest}>
       {(state) => (
         <div
           className={`${className} fade fade-${state}`}
@@ -44,12 +45,6 @@ FadeInOut.propTypes = {
   className: PropTypes.string,
   inProp: PropTypes.bool,
   timeout: PropTypes.number
-};
-
-FadeInOut.defaultProps = {
-  className: '',
-  inProp: false,
-  timeout: 300
 };
 
 export default FadeInOut;

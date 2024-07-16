@@ -2,5 +2,7 @@
   "region": "us-east-1",
   "channelType": "BASIC",
   "reconnectWindowSeconds": 60,
-  "allowedOrigins": ["http://localhost:3000"]
+  "allowedOrigins": ["http://localhost:3000"],
+  "insecureRTMPIngest": false,
+  "transcodePreset": ""
 }

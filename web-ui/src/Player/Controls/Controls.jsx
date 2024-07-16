@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import './Controls.css';
 import { formatTime } from '../../utils';
-import { LIVE, VOD, VOD_LOADING_TIMEOUT } from '../../constants';
+import { LIVE, VOD, VOD_LOADING_TIMEOUT, VOD_STEP_SIZE } from '../../constants';
 import BackToLiveBtn from './BackToLiveBtn';
 import Backward60SVG from '../../assets/icons/backward-60';
 import Forward60SVG from '../../assets/icons/forward-60';
@@ -17,7 +17,7 @@ import useSeekBar, {
   playerControlSeekBarWrapperId
 } from '../../hooks/useSeekBar';
 
-const Controls = ({ isLive }) => {
+const Controls = ({ isLive = true }) => {
   const { stopPropagAndResetTimeout } = useControls();
   const {
     activePlayer,
@@ -64,13 +64,13 @@ const Controls = ({ isLive }) => {
     backToLiveStartProgress !== null && backToLivePosDiff !== null;
 
   const goBackwards = useCallback(
-    (event) => {
+    (event, seconds = 60) => {
       stopPropagAndResetTimeout(event);
 
       if (!isBackwardsDisabled) {
         const currentVODDuration = getVodDuration();
         const currentVODPosition = getVodPosition();
-        const nextPosition = Math.max(0, currentVODPosition - 60); // position in seconds
+        const nextPosition = Math.max(0, currentVODPosition - seconds); // position in seconds
         const nextProgress = (nextPosition / currentVODDuration) * 100;
 
         updateProgress(nextProgress);
@@ -85,14 +85,14 @@ const Controls = ({ isLive }) => {
     ]
   );
   const goForwards = useCallback(
-    (event) => {
+    (event, seconds = 60) => {
       stopPropagAndResetTimeout(event);
 
       if (!isForwardsDisabled) {
         const currentVODDuration = getVodDuration();
         const currentVODPosition = getVodPosition();
         let nextPosition = Math.min(
-          currentVODPosition + 60,
+          currentVODPosition + seconds,
           currentVODDuration
         ); // position in seconds
         let nextProgress = (nextPosition / currentVODDuration) * 100;
@@ -111,9 +111,9 @@ const Controls = ({ isLive }) => {
   const onKeyDownHandler = useCallback(
     (event) => {
       if (event.key === 'ArrowRight' && !event.repeat) {
-        goForwards();
+        goForwards(null, VOD_STEP_SIZE);
       } else if (event.key === 'ArrowLeft' && !event.repeat) {
-        goBackwards();
+        goBackwards(null, VOD_STEP_SIZE);
       }
     },
     [goBackwards, goForwards]
@@ -343,10 +343,6 @@ const Controls = ({ isLive }) => {
 
 Controls.propTypes = {
   isLive: PropTypes.bool
-};
-
-Controls.defaultProps = {
-  isLive: true
 };
 
 export default Controls;
