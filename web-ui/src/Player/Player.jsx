@@ -61,6 +61,7 @@ const Player = () => {
           className={isLive ? 'active-player' : ''}
           muted
           playsInline
+          crossOrigin="anonymous"
           ref={liveVideoRef}
         />
         <video
@@ -71,6 +72,7 @@ const Player = () => {
           className={!isLive ? 'active-player' : ''}
           muted
           playsInline
+          crossOrigin="anonymous"
           ref={vodVideoRef}
         />
       </div>

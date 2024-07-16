@@ -105,7 +105,12 @@ const usePlayer = (urlToLoad, type, isChannelLive) => {
     // If a player instance already exists, destroy it before creating a new one
     if (playerRef.current) destroy();
 
-    playerRef.current = createMediaPlayer();
+    playerRef.current = createMediaPlayer({
+      serviceWorker: {
+        url: '../workers/amazon-ivs-service-worker-loader.js'
+      }
+    });
+
     playerRef.current.attachHTMLVideoElement(videoRef.current);
 
     playerRef.current.addEventListener(DURATION_CHANGED, onDurationChanged);
