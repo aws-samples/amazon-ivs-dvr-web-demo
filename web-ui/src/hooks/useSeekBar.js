@@ -32,7 +32,10 @@ const useSeekBar = () => {
     const seekBarWidth = parseFloat(seekBarStyle.width);
     const scrubStyle = getComputedStyle(scrubRef.current);
     const scrubWidth = parseFloat(scrubStyle.width);
-    let newPosition = (seekBarWidth * nextProgress) / 100 - scrubWidth;
+    let newPosition = Math.max(
+      (seekBarWidth * nextProgress) / 100 - scrubWidth,
+      0
+    );
 
     if (nextProgress === 0) {
       newPosition = 0;
