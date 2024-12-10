@@ -14,6 +14,7 @@ import { LIVE, VOD } from '../../constants';
 import PlaybackContext from './context';
 import usePlayer from '../../hooks/usePlayer';
 import useStateWithCallback from '../../hooks/useStateWithCallback';
+import useFirstMountState from '../../hooks/useFirstMountState';
 
 const defaultPlaybackMetadata = {
   livePlaybackUrl: '',
@@ -27,6 +28,7 @@ const PlaybackProvider = ({ children }) => {
   const [bufferPercent, setBufferPercent] = useState(0);
   const retryTimeoutId = useRef();
   const isiOSDevice = isiOS();
+  const [shouldFetch, setShouldFetch] = useState(true);
   const {
     data: {
       isChannelLive,
@@ -35,27 +37,40 @@ const PlaybackProvider = ({ children }) => {
       vodPlaybackURL,
       livePlaybackUrl
     }
-  } = useSWR('recording-started-latest.json', fetchPlaybackMetadata, {
-    refreshInterval: 5000,
-    revalidateOnMount: true,
-    fallbackData: defaultPlaybackMetadata,
-    onErrorRetry: (error, _key, _config, revalidate) => {
-      if (error instanceof CFDomainError) {
-        livePlayer?.setError(error);
-        console.error(`${error.message} \n ${error.description}`);
-        return;
+  } = useSWR(
+    shouldFetch ? 'recording-started-latest.json' : null,
+    fetchPlaybackMetadata,
+    {
+      refreshInterval: 5000,
+      revalidateOnMount: true,
+      fallbackData: defaultPlaybackMetadata,
+      onErrorRetry: (error, _key, _config, revalidate) => {
+        if (error instanceof CFDomainError) {
+          livePlayer?.setError(error);
+          console.error(`${error.message} \n ${error.description}`);
+          return;
+        }
+        retryTimeoutId.current = setTimeout(revalidate, 3000);
       }
-      retryTimeoutId.current = setTimeout(revalidate, 3000);
     }
-  });
+  );
   const [activePlayerType, setActivePlayerType] = useState(LIVE);
   const livePlayer = usePlayer(livePlaybackUrl, LIVE, isChannelLive);
   const vodPlayer = usePlayer(vodPlaybackURL, VOD, isChannelLive);
   const {
     instance: vodPlayerInstance,
     setCurrentTime: setVodCurrentTime,
-    videoRef: vodVideoRef
+    videoRef: vodVideoRef,
+    isPaused
   } = vodPlayer;
+
+  // When the VOD player is paused, stop fetching updated recording-started-latest.json
+  const isFirstMount = useFirstMountState();
+  useEffect(() => {
+    if (isFirstMount) return;
+    setShouldFetch(!isPaused);
+  }, [isPaused, isFirstMount]);
+
   /**
    * Known issue: getDuration, seekTo and getPosition are not working as expected on iOS.
    *

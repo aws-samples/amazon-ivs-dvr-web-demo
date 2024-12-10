@@ -1,0 +1,35 @@
+.status-pill {
+  align-items: center;
+  border-radius: 40px;
+  display: flex;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  right: 32px;
+  line-height: 17px;
+  padding: 3px 8px 4px;
+  position: absolute;
+  user-select: none;
+  top: 31px;
+  z-index: 1;
+}
+
+.status-pill > *:first-child {
+  margin-right: 8px;
+}
+
+.status-pill.single-player-is-live {
+  background-color: var(--color-pill-red);
+}
+
+.status-pill.single-player-is-recorded {
+  background-color: #475569;
+  color: var(--color-white);
+}
+
+@media (max-width: 875px) and (orientation: portrait) {
+  .status-pill {
+    right: 24px;
+  }
+}

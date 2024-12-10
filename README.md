@@ -77,6 +77,28 @@ Where `<domain-name>` is the domain name of the CloudFront distribution, such as
 
    Once you go live, you will be able to see your live video stream on the hosted frontend. About 50 seconds since you started broadcasting, the VOD will become available and you will be able to seamlessly scrub between Live and VOD in the player.
 
+## Frontend Player Options
+
+The app supports two options for running the frontend: a dual-player option and a single-player option.
+
+### Dual-Player Option (Default)
+Available at the `/` route, this option switches between two player instances - one for live playback and one for VOD playback. When a viewer is watching content on one player, the other player remains hidden but continues to buffer and play content in the background. This ensures immediate content availability when switching modes, providing the smoothest possible user experience with no interruptions during transitions.
+
+While this approach provides optimal playback continuity, it will:
+- Incur higher costs due to concurrent streaming of both live and VOD content
+- Require more system resources
+- Increase data usage
+
+### Single-Player Option
+Available at the `/alt` route, this option uses a single player instance and loads the appropriate playback URL when switching between live and VOD modes. The player reinitializes with the new content when transitioning between modes, which maintains efficient resource usage but may result in brief loading periods.
+
+This approach provides a balanced experience that:
+- Reduces operational costs through single-stream playback
+- Minimizes system resource consumption
+- Optimizes data usage efficiency
+
+Choose the option that best balances your needs for user experience and resource optimization.
+
 ## Backend Specification
 
 ```
