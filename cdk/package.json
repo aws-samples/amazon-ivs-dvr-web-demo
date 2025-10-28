@@ -20,7 +20,7 @@
   "dependencies": {
     "@aws-sdk/client-ivs": "^3.613.0",
     "@aws-sdk/client-s3": "^3.613.0",
-    "aws-cdk-lib": "^2.148.0",
+    "aws-cdk-lib": "^2.189.1",
     "constructs": "^10.2.44",
     "source-map-support": "^0.5.21"
   }
